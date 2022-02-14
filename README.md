@@ -3,7 +3,8 @@
 This repository contain java code to compare two repositories.
 
 ##Important Files
-*`config.properties` : This file is configuration file in which user need to provide details of repositories and exclude file and directory.
+
+* `config.properties` : This file is configuration file in which user need to provide details of repositories and exclude file and directory.
 
 
 ******************
