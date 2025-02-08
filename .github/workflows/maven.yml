@@ -32,7 +32,7 @@ jobs:
       id: check_report
       shell: bash
       run: |
-        if test -f target/test1.html; then
+        if test -f target/test.html; then
           echo "File Exist"
           echo "file_present=true" >> $GITHUB_OUTPUT
         else
