@@ -13,7 +13,7 @@ on:
 permissions:
   contents: write
 env:
-  REPORT_HOST: "https://ravighodasara.github.io/RepoCompare/reports/" #"https://nci-ctrp.github.io/nci-accrual-rest-assured-api/reports/"
+  REPORT_HOST: "https://ravighodasara.github.io/RepoCompare/report/" #"https://nci-ctrp.github.io/nci-accrual-rest-assured-api/reports/"
 jobs:
   build:
 
