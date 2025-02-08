@@ -68,7 +68,7 @@ jobs:
           echo "report does not exist."
           mkdir report_repo/report;
         fi
-        date_str=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
+        
         echo $date_str
         mv target/test.html report_repo/report/report_$date_str.html
         cd report_repo
