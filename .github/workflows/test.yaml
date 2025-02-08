@@ -1,0 +1,94 @@
+name: NCI-CTRP/nci-accrual-api
+on:
+  schedule:
+    - cron: '30 21 * * *'
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.INT_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.INT_AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: us-east-1
+  REPORT_HOST: "https://nci-ctrp.github.io/nci-accrual-rest-assured-api/reports/"
+
+jobs:
+  PUSH_CHANGES:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 540
+    steps:
+      - name: Show Current UTC Time
+        id: date_info
+        shell: bash
+        run: |
+          echo "Current UTC time is $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          date_str=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
+          echo $date_str
+          echo "date_str=$date_str" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v4.1.0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4.0.0
+        with:
+          distribution: zulu
+          java-version: '17'
+          cache: 'maven'
+
+      - name: "Push Event"
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then mvn clean test -Denvironment=dev; fi
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then mvn clean test -Denvironment=dev; fi
+        continue-on-error: true
+
+      - name: Check Report
+        id: check_report
+        shell: bash
+        run: |
+          if test -f target/test.html; then
+            echo "File Exist"
+            echo "file_present=true" >> $GITHUB_OUTPUT
+          else
+            echo "File Not Exist"
+            echo "file_present=false" >> $GITHUB_OUTPUT
+          fi
+  
+      - name: Checkout report repo
+        if: steps.check_report.outputs.file_present == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: report
+          path: report_repo
+          
+      - name: Copy Report
+        id: copy_report
+        if: steps.check_report.outputs.file_present == 'true'
+        shell: bash          
+        run: |
+          ls -ltr
+          if [ ! -d report_repo/report ]; then
+            echo "report does not exist."
+            mkdir report_repo/report;
+          fi
+          
+          echo $date_str
+          mv target/test.html report_repo/report/report_$date_str.html
+          cd report_repo
+          git config --global user.name "RaviGhodasara"
+          git config --global user.email "ravindra.ghodasara@gmail.com"
+          git add report/report_$date_str.html
+          git commit -m 'Report'
+          ls -ltr
+          git push
+
+      - name: Send Email Via AWS SES
+        run: |
+           aws ses send-email \
+             --from vishwash.patel@nih.gov \
+             --destination "ToAddresses=vishwash.patel@nih.gov" \
+             --message "Subject={Data=GitHub Action Build Status: ${{ github.workflow }} (${GITHUB_RUN_NUMBER})},Body={Text={Data=The build status for the GitHub Action ${{ github.workflow }} (${GITHUB_RUN_NUMBER}) is: ${{ job.status }}.\n\nDetails: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}}}"
