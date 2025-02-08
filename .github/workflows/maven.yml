@@ -53,6 +53,7 @@ jobs:
         git config --global push.autoSetupRemote true
         git config pull.rebase true
         git config rebase.autoStash true
+        git config set advice.mergeConflict false
         ls -ltr
         if [ ! -d report ]; then
           echo "report does not exist."
