@@ -29,7 +29,8 @@ jobs:
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Check Report
-      run: 
+      shell: bash
+      run: |
         if [-e 'target/test.html']; then
           echo "File Exist"
         else
