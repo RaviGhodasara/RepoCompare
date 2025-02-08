@@ -79,16 +79,22 @@ jobs:
           echo $date_str
           mv target/test.html report_repo/report/report_$date_str.html
           cd report_repo
-          git config --global user.name "RaviGhodasara"
-          git config --global user.email "ravindra.ghodasara@gmail.com"
+          git config --global user.name "vishwash.patel"
+          git config --global user.email "vishwash.patel@nih.gov"
           git add report/report_$date_str.html
           git commit -m 'Report'
           ls -ltr
           git push
+          SUMMARY=$'# Test Report Link\n#'
+          REPORT_NAME=report_$date_str.html
+          REPORT_LINK=$REPORT_HOST$REPORT_NAME
+          echo "REPORT_LINK=$REPORT_LINK" >> $GITHUB_ENV
+          SUMMARY_FINAL=$SUMMARY$REPORT_LINK
+          echo "$SUMMARY_FINAL" >> $GITHUB_STEP_SUMMARY
 
       - name: Send Email Via AWS SES
         run: |
            aws ses send-email \
              --from vishwash.patel@nih.gov \
              --destination "ToAddresses=vishwash.patel@nih.gov" \
-             --message "Subject={Data=GitHub Action Build Status: ${{ github.workflow }} (${GITHUB_RUN_NUMBER})},Body={Text={Data=The build status for the GitHub Action ${{ github.workflow }} (${GITHUB_RUN_NUMBER}) is: ${{ job.status }}.\n\nDetails: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}}}"
+             --message "Subject={Data=GitHub Action Build Status: ${{ github.workflow }} (${GITHUB_RUN_NUMBER})},Body={Text={Data=The build status for the GitHub Action ${{ github.workflow }} (${GITHUB_RUN_NUMBER}) is: ${{ job.status }}.\n\nReport Link : $REPORT_LINK \n\nDetails: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}}}"
