@@ -31,12 +31,12 @@ jobs:
     - name: Check Report
       shell: bash
       run: 
-        if test -f 'target/test.html'; then
+        if [-e 'target/test.html']; then
           echo "File Exist"
         elif
           echo "File Not Exist"
         fi
-        if test -f 'test/test.html'; then
+        if [-e 'test/test.html']; then
           echo "File Exist test"
         elif
           echo "File Not Exist test"
