@@ -41,31 +41,33 @@ jobs:
           echo "file_present=false" >> $GITHUB_OUTPUT
         fi
 
+    - name: Checkout report repo
+      if: steps.check_report.outputs.file_present == 'true'
+      uses: actions/checkout@v4
+      with:
+        ref: report
+        path: report_repo
+        
     - name: Copy Report
       id: copy_report
       if: steps.check_report.outputs.file_present == 'true'
       shell: bash
       run: |
-        git checkout -B report FETCH_HEAD
-        git fetch --prune --all
-        git config --global user.name "RaviGhodasara"
-        git config --global user.email "ravindra.ghodasara@gmail.com"
-        git config --global push.autoSetupRemote true
-        git config pull.rebase true
-        git config rebase.autoStash true
-        git config set advice.mergeConflict false
         ls -ltr
-        if [ ! -d report ]; then
+        if [ ! -d report_repo/report ]; then
           echo "report does not exist."
-          mkdir report
+          mkdir report_repo/report;
         fi
         date_str=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
         echo $date_str
-        mv target/test.html report/report_$date_str.html
-        git fetch origin report
+        mv target/test.html report_repo/report/report_$date_str.html
+        cd report_repo
+        git config --global user.name "RaviGhodasara"
+        git config --global user.email "ravindra.ghodasara@gmail.com"
+        
         git add report/report_$date_str.html
         git commit -m 'Report'
         ls -ltr
-        git push origin report
+        git push
         
         
