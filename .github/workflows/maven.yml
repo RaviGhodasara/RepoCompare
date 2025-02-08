@@ -61,7 +61,7 @@ jobs:
         date_str=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
         echo $date_str
         mv target/test.html report/report_$date_str.html
-        git add report/report_report_$date_str.html
+        git add report/report_$date_str.html
         git commit -m '$date_str Report'
         git push
         
