@@ -67,7 +67,7 @@ jobs:
         mv target/test.html report/report_$date_str.html
         git add report/report_$date_str.html
         git commit -m 'Report'
-        git pull --rebase --autostash
+        git pull --rebase --autostash report
         ls -ltr
         git push
         
