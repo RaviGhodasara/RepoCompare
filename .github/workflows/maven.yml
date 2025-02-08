@@ -36,6 +36,11 @@ jobs:
         else
           echo "File Not Exist"
         fi
+        if test -f target/test1.html; then
+          echo "File Exist test1"
+        else
+          echo "File Not Exist test1"
+        fi
         if test -f test/test.html; then
           echo "File Exist test"
         else
