@@ -78,8 +78,9 @@ jobs:
         git commit -m 'Report'
         ls -ltr
         git push
-        SUMMARY=$'# Test Report Link\n'
-        SUMMARY_FINAL=$SUMMARY$REPORT_HOSTreport_$date_str.html
+        SUMMARY=$'# Test Report Link\n#'
+        REPORT_NAME=report_$date_str.html
+        SUMMARY_FINAL=$SUMMARY$REPORT_HOST$REPORT_NAME
         echo "$SUMMARY_FINAL" >> $GITHUB_STEP_SUMMARY
         
         
