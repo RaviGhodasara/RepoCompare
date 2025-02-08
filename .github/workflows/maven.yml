@@ -56,7 +56,6 @@ jobs:
         git config --global user.name "RaviGhodasara"
         git config --global user.email "ravindra.ghodasara@gmail.com"
         git config --global push.autoSetupRemote true
-        git push
         ls -ltr
         if [ ! -d report ]; then
           echo "report does not exist."
