@@ -56,6 +56,7 @@ jobs:
         git config --global user.name "RaviGhodasara"
         git config --global user.email "ravindra.ghodasara@gmail.com"
         git config --global push.autoSetupRemote true
+        git push
         ls -ltr
         if [ ! -d report ]; then
           echo "report does not exist."
@@ -66,7 +67,7 @@ jobs:
         mv target/test.html report/report_$date_str.html
         git add report/report_$date_str.html
         git commit -m '$date_str Report'
-        git pull
+        git pull origin remote
         git push
         
         
