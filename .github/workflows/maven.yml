@@ -29,23 +29,23 @@ jobs:
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Check Report
+      id: check_report
       shell: bash
       run: |
-        if test -f target/test.html; then
+        if test -f target/test1.html; then
           echo "File Exist"
+          echo "file_present=true" >> $GITHUB_OUTPUT
         else
           echo "File Not Exist"
+          echo "file_present=false" >> $GITHUB_OUTPUT
         fi
-        if test -f target/test1.html; then
-          echo "File Exist test1"
-        else
-          echo "File Not Exist test1"
-        fi
-        if test -f test/test.html; then
-          echo "File Exist test"
-        else
-          echo "File Not Exist test"
-        fi
+
+    - uses: actions/upload-artifact@v4
+      if: steps.check_report.outputs.file_present == true
+      with:
+        name: report
+        path: target/test.html
+
         
         #git checkout -B report
         
