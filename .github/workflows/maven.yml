@@ -10,11 +10,14 @@ name: Java CI with Maven
 
 on:
   woworkflow_dispatch:
-    
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    inputs:
+      repo_name:
+      default: "Reponame"
+      required: false
+    PAT:
+      description: 
+      default: "TOKEN"
+      required: false
 
 jobs:
   build:
