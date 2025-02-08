@@ -33,12 +33,12 @@ jobs:
       run: 
         if [-e 'target/test.html']; then
           echo "File Exist"
-        elif
+        else
           echo "File Not Exist"
         fi
         if [-e 'test/test.html']; then
           echo "File Exist test"
-        elif
+        else
           echo "File Not Exist test"
         fi
         
