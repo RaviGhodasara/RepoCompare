@@ -46,6 +46,11 @@ jobs:
         name: report
         path: target/test.html
 
-        
-        #git checkout -B report
+    - name: Copy Report
+      id: copy_report
+      if: steps.check_report.outputs.file_present == 'true'
+      shell: bash
+      run: |
+        git checkout -B report
+        ls -ltr
         
