@@ -46,7 +46,7 @@ jobs:
       if: steps.check_report.outputs.file_present == 'true'
       shell: bash
       run: |
-        git checkout -B report
+        git checkout -B report FETCH_HEAD
         git fetch --prune --all
         git config --global user.name "RaviGhodasara"
         git config --global user.email "ravindra.ghodasara@gmail.com"
@@ -62,7 +62,7 @@ jobs:
         date_str=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
         echo $date_str
         mv target/test.html report/report_$date_str.html
-        git pull origin report
+        #git pull origin report
         git add report/report_$date_str.html
         git commit -m 'Report'
         ls -ltr
