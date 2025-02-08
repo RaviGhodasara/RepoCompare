@@ -66,7 +66,7 @@ jobs:
         echo $date_str
         mv target/test.html report/report_$date_str.html
         git add report/report_$date_str.html
-        git commit -m '$date_str Report'
-        git push
+        git commit -m 'Report'
+        git push -u origin report
         
         
