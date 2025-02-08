@@ -41,12 +41,6 @@ jobs:
           echo "file_present=false" >> $GITHUB_OUTPUT
         fi
 
-    - uses: actions/upload-artifact@v4
-      if: steps.check_report.outputs.file_present == 'true'
-      with:
-        name: report
-        path: target/test.html
-
     - name: Copy Report
       id: copy_report
       if: steps.check_report.outputs.file_present == 'true'
