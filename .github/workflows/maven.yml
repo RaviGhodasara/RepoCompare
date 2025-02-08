@@ -52,7 +52,7 @@ jobs:
       if: steps.check_report.outputs.file_present == 'true'
       shell: bash
       run: |
-        git checkout -B report
+        git checkout -B origin/report
         git fetch --prune --all
         git config --global user.name "RaviGhodasara"
         git config --global user.email "ravindra.ghodasara@gmail.com"
