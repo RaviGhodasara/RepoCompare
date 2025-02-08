@@ -61,10 +61,7 @@ jobs:
         date_str=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
         echo $date_str
         mv target/test.html report_repo/report/report_$date_str.html
-        cd report_repo
-        git config --global user.name "RaviGhodasara"
-        git config --global user.email "ravindra.ghodasara@gmail.com"
-        
+        cd report_repo        
         git add report/report_$date_str.html
         git commit -m 'Report'
         ls -ltr
